@@ -1,36 +1,38 @@
-<html><head>
-        <title> Display Selected Customer Information </title>
-    </head>
-    <body>
-        <?php
-        if (isset($_GET["CountryCode"]))
-        {
-            $strCountryCode = $_GET["CountryCode"];
-        }
-        require "connect.php";
-        $sql ="SELECT * FROM country WHERE CountryCode = ?";
-        $params = array($strCountryCode);
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        ?>
+<html> <head>
+<title> Udsanee-Display customer in table</title>
+</head>
+<body>
+<?php
+require "connect.php";
+$sql = "SELECT CountryCode,CountryName FROM country";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+?>
 
-<!-- Detail  -->
-    <table width="300" border="1">
+<table width="250" border="1">
   <tr>
-    <th width="325">รหัสประเทศ</th>
-    <td width="240"><?php echo $result["CountryCode"]; ?></td>
+    <th width="140"> <div align="center">รหัสประเทศ </th>
+    <th width="140"> <div align="center">ชื่อประเทศ </th>
   </tr>
 
+<?php
+  while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+?>
+
   <tr>
-    <th width="130">ชื่อประเทศ</th>
+   <td><?php echo $result["CountryCode"]; ?></td>
     <td><?php echo $result["CountryName"]; ?></td>
+    
   </tr>
- 
-  </table>
+
+<?php
+  }
+?>
+
+</table>
 
 <?php
 $conn = null;
 ?>
-    </body>
+</body>  
 </html>
